@@ -1,0 +1,10 @@
+Testsuite: ua.nure.kn.bondarchuk.usermanagement2.UserTest
+Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 sec
+
+Testcase: testGetFullName took 0 sec
+Testcase: testGetAgeBdayNewYearEve took 0 sec
+Testcase: testGetAgeBday29OfFebruary took 0 sec
+Testcase: testGetAgeBdayFirstOfJanuary took 0 sec
+Testcase: testGetAgeBdayTomorrow took 0 sec
+Testcase: testGetAgeBdayToday took 0 sec
+Testcase: testGetAge took 0 sec
