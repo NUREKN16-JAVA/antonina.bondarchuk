@@ -1,7 +1,6 @@
 package ua.nure.kn.bondarchuk.usermanagement2;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
@@ -17,6 +16,16 @@ public class User implements Serializable {
 	private String lastName;
 	private Date dateOfBirth;
 
+	 public User() {
+	    }
+
+	 public User(Long id, String firstName, String lastName, Date dateOfBirth) {
+	     this.id = id;
+	     this.firstName = firstName;
+	     this.lastName = lastName;
+	     this.dateOfBirth = dateOfBirth;
+	    }
+	    
 	public Long getId() {
 		return id;
 	}
@@ -64,12 +73,7 @@ public class User implements Serializable {
 		}
 		return age;
 		
-		/*LocalDate currentDate = LocalDate.now();
-		LocalDate date = dateOfBirth.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		System.out.println(date);
-		System.out.println(currentDate);
-		return ChronoUnit.YEARS.between(date, currentDate);	*/
-								
+									
 	}
 
 }
