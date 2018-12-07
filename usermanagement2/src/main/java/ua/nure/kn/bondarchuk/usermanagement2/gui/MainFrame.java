@@ -12,7 +12,8 @@ public class MainFrame extends JFrame {
 	private static final int FRAME_HEIGHT = 600;
 	private static final int FRAME_WIDTH = 800;
 	private JPanel contentPanel;
-	private BrowsePanel browsePanel;
+	private JPanel browsePanel;
+	private AddPanel addPanel;
 
 	public MainFrame() {
 		super();
@@ -36,16 +37,41 @@ public class MainFrame extends JFrame {
 		return contentPanel;
 	}
 
-	private Component getBrowsePanel() {
+	private JPanel getBrowsePanel() {
 		if (browsePanel == null) {
 			browsePanel = new BrowsePanel(this);
 		}
 		return browsePanel;
 	}
+	
+	public void showBrowsePanel() {
+		showPanel(getBrowsePanel());
+	}
 
 	public static void main(String[] args) {
-		
+		MainFrame frame = new MainFrame();
+		frame.setVisible(true);
 
+	}
+
+	public void showAddPanel() {
+		showPanel(getAddPanel());
+		
+	}
+
+	private void showPanel(JPanel panel) {
+		getContentPane().add(panel, BorderLayout.CENTER);
+		panel.setVisible(true);
+		panel.repaint();
+		
+	}
+
+	private AddPanel getAddPanel() {
+		if (addPanel == null) {
+			addPanel = new AddPanel(this);
+			
+		}
+		return addPanel;
 	}
 
 }

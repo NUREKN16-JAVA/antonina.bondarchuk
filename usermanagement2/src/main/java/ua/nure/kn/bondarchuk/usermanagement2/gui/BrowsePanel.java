@@ -15,14 +15,14 @@ public class BrowsePanel extends JPanel implements ActionListener{
 	private MainFrame parent;
 	private JScrollPane tablePanel;
 	private JTable userTable;
-	private JPanel buttonsPanel;
+	private JPanel buttonPanel;
 	private JButton addButton;
 	private JButton editButton;
 	private JButton deleteButton;
 	private JButton detailsButton;
 
-	public BrowsePanel(MainFrame mainFrame) {
-		parent = mainFrame;
+	public BrowsePanel(MainFrame frame) {
+		parent = frame;
 		initialize();
 	}
 	
@@ -34,15 +34,15 @@ public class BrowsePanel extends JPanel implements ActionListener{
 	}
 	
 	private JPanel getButtonsPanel() {
-		if (buttonsPanel == null) {
-			buttonsPanel = new JPanel();
-			buttonsPanel.add(getAddButton());
-			buttonsPanel.add(getEditButton());
-			buttonsPanel.add(getDeleteButton());
-			buttonsPanel.add(getDetailsButton());
+		if (buttonPanel == null) {
+			buttonPanel = new JPanel();
+			buttonPanel.add(getAddButton(), null);
+			buttonPanel.add(getEditButton(), null);
+			buttonPanel.add(getDeleteButton(), null);
+			buttonPanel.add(getDetailsButton(), null);
 			
 		}
-		return buttonsPanel;
+		return buttonPanel;
 	}
 
 	private JButton getAddButton() {
@@ -108,7 +108,14 @@ public class BrowsePanel extends JPanel implements ActionListener{
 
 	@Override
     public void actionPerformed(ActionEvent e) {
+        String actionCommand = e.getActionCommand();
+        if ("add".equalsIgnoreCase(actionCommand)) {
+        	this.setVisible(false);
+        	parent.showAddPanel();
+        }
+        	
+        }
         
     }
 
-}
+
