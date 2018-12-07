@@ -39,8 +39,6 @@ class HsqldbUserDao implements UserDao {
 	}
 
 
-
-
 	@Override
 	public User create(User user) throws DatabaseException {
 		
@@ -129,6 +127,7 @@ class HsqldbUserDao implements UserDao {
 			throw new DatabaseException(e);
 		}
 		return result;
+		
 	}
 
 	@Override

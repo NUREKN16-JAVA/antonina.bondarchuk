@@ -117,13 +117,6 @@ public class HsqldbUserDaoTest extends DatabaseTestCase {
 	
 	
 	
-
-
-
-	
-
-	
-	
 	@Override
 	protected IDatabaseConnection getConnection() throws Exception {
 		connectionFactory = new ConnectionFactoryImpl();
