@@ -30,11 +30,9 @@ public class MainFrameTest extends JFCTestCase {
 		
 		try {
 			Properties properties = new Properties();
-			properties.setProperty(
-					"ua.nure.kn.bondarchuk.usermanagement2.db.UserDao", 
-					MockUserDao.class.getName());
+			properties.setProperty("ua.nure.kn.bondarchuk.usermanagement2.db.UserDao", MockUserDao.class.getName());
 			properties.setProperty("dao.factory", DaoFactoryImpl.class.getName());
-			DaoFactory.getInstance().init(properties);
+			DaoFactory.init(properties);
 			
 			setHelper(new JFCTestHelper());
 			mainFrame = new MainFrame();
@@ -50,6 +48,7 @@ public class MainFrameTest extends JFCTestCase {
 		mainFrame.setVisible(false);
 		getHelper().cleanUp(this);
 		super.tearDown();
+		
 	}
 	
 	private Component find(Class<?> componentClass, String name) {

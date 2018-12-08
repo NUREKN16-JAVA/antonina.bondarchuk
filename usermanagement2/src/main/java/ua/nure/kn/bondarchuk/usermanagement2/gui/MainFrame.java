@@ -16,7 +16,7 @@ public class MainFrame extends JFrame {
 	private static final int FRAME_HEIGHT = 600;
 	private static final int FRAME_WIDTH = 800;
 	private JPanel contentPanel;
-	private JPanel browsePanel;
+	private BrowsePanel browsePanel;
 	private AddPanel addPanel;
 	private UserDao dao;
 

@@ -40,7 +40,7 @@ public class UserTableModel extends AbstractTableModel {
 		return COLUMN_NAMES[column];
 	}
 	
-	
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		User user = (User) users.get(rowIndex);
 		switch (columnIndex) {
