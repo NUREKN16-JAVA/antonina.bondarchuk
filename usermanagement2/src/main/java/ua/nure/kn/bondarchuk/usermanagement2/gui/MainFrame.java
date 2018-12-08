@@ -7,6 +7,8 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
+
 public class MainFrame extends JFrame {
 
 	private static final int FRAME_HEIGHT = 600;
@@ -23,7 +25,7 @@ public class MainFrame extends JFrame {
 	private void initialize() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(FRAME_WIDTH, FRAME_HEIGHT);
-		this.setTitle("User management"); //localize
+		this.setTitle(Messages.getString("MainFrame.user_management")); //localize //$NON-NLS-1$
 		this.setContentPane(getContentPanel()); //singleton
 	}
 	
