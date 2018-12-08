@@ -7,10 +7,12 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import ua.nure.kn.bondarchuk.usermanagement2.db.DatabaseException;
 import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
 public class BrowsePanel extends JPanel implements ActionListener{
@@ -105,10 +107,21 @@ public class BrowsePanel extends JPanel implements ActionListener{
 		if (userTable == null) {
 			userTable = new JTable();
 			userTable.setName("userTable"); //$NON-NLS-1$
-			UserTableModel model = new UserTableModel(new ArrayList<>());
-			userTable.setModel(model);
+			
 		}
+		
 		return userTable;
+	}
+
+	public void initTable() {
+		UserTableModel model;
+		try {
+			model = new UserTableModel(parent.getDao().findAll());
+		} catch (DatabaseException e) {
+			model = new UserTableModel(new ArrayList());
+			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		getUserTable().setModel(model);
 	}
 
 	@Override

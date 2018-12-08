@@ -7,6 +7,8 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ua.nure.kn.bondarchuk.usermanagement2.db.DaoFactory;
+import ua.nure.kn.bondarchuk.usermanagement2.db.UserDao;
 import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
 public class MainFrame extends JFrame {
@@ -16,11 +18,21 @@ public class MainFrame extends JFrame {
 	private JPanel contentPanel;
 	private JPanel browsePanel;
 	private AddPanel addPanel;
+	private UserDao dao;
+
+	public UserDao getDao() {
+		return dao;
+	}
+
+
 
 	public MainFrame() {
 		super();
+		dao = DaoFactory.getInstance().getUserDao();
 		initialize();
 	}
+	
+	
 	
 	private void initialize() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -43,6 +55,7 @@ public class MainFrame extends JFrame {
 		if (browsePanel == null) {
 			browsePanel = new BrowsePanel(this);
 		}
+		((BrowsePanel) browsePanel).initTable();
 		return browsePanel;
 	}
 	
