@@ -13,7 +13,7 @@ public abstract class DaoFactory {
 	static {
 		properties = new Properties();
 		try {
-			properties.load(DaoFactory.class.getClass().getClassLoader().getResourceAsStream("settings.properties"));
+			properties.load(DaoFactory.class.getClassLoader().getResourceAsStream("settings.properties"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -21,7 +21,7 @@ public abstract class DaoFactory {
 	
 	
 	
-	public static synchronized DaoFactory getInstance() {
+	public static DaoFactory getInstance() {
 		if(instance == null) {
 			Class<?> factoryClass;
 			try {

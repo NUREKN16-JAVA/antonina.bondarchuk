@@ -118,7 +118,7 @@ public class BrowsePanel extends JPanel implements ActionListener{
 		try {
 			model = new UserTableModel(parent.getDao().findAll());
 		} catch (DatabaseException e) {
-			model = new UserTableModel(new ArrayList());
+			model = new UserTableModel(new ArrayList<>());
 			JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		getUserTable().setModel(model);
@@ -131,7 +131,8 @@ public class BrowsePanel extends JPanel implements ActionListener{
         	this.setVisible(false);
         	parent.showAddPanel();
         }
-        	
+        initTable();
+        return;
         }
         
     }

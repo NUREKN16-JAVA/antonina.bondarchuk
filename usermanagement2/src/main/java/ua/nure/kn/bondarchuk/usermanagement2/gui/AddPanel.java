@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -129,7 +131,7 @@ public class AddPanel extends JPanel implements ActionListener {
 			user.setLastName(getLastNameField().getText());
 			DateFormat format = DateFormat.getDateTimeInstance();
 			try {
-				user.setDateOfBirth(format.parse(getDateOfBirthField().getText()));
+				user.setDateOfBirth(new SimpleDateFormat("dd-MM-yyyy").parse(getDateOfBirthField().getText()));
 			} catch (ParseException e1) {
 				getDateOfBirthField().setBackground(Color.RED);
 				return;

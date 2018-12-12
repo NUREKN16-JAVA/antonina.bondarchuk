@@ -2,6 +2,7 @@ package ua.nure.kn.bondarchuk.usermanagement2.gui;
 
 import java.awt.Component;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
@@ -30,7 +31,7 @@ public class MainFrameTest extends JFCTestCase {
 		
 		try {
 			Properties properties = new Properties();
-			properties.setProperty("ua.nure.kn.bondarchuk.usermanagement2.db.UserDao", MockUserDao.class.getName());
+			properties.setProperty("dao.ua.nure.kn.bondarchuk.usermanagement2.db.UserDao", MockUserDao.class.getName());
 			properties.setProperty("dao.factory", DaoFactoryImpl.class.getName());
 			DaoFactory.init(properties);
 			
@@ -93,8 +94,8 @@ public class MainFrameTest extends JFCTestCase {
 			
 		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
 		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
-		DateFormat formatter = DateFormat.getDateInstance();
-		String date = formatter.format(new Date());
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    String date=dateFormat.format(new Date());
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 	
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
