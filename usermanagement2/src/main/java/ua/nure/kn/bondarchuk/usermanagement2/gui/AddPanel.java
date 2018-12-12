@@ -21,7 +21,7 @@ import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
 public class AddPanel extends JPanel implements ActionListener {
 	
-	private MainFrame parent;
+	protected MainFrame parent;
 	private JPanel buttonPanel;
 	private JPanel fieldPanel;
 	private JButton cancelButton;
@@ -96,7 +96,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		
 	}
 
-	private JTextField getFirstNameField() {
+	protected JTextField getFirstNameField() {
 		if (firstNameField == null) {
 			firstNameField = new JTextField();
 			firstNameField.setName("firstNameField"); //$NON-NLS-1$
@@ -104,7 +104,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		return firstNameField;
 	}
 	
-	private JTextField getDateOfBirthField() {
+	protected JTextField getDateOfBirthField() {
 		if (dateOfBirthField == null) {
 			dateOfBirthField = new JTextField();
 			dateOfBirthField.setName("dateOfBirthField"); //$NON-NLS-1$
@@ -112,7 +112,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		return dateOfBirthField;
 	}
 
-	private JTextField getLastNameField() {
+	protected JTextField getLastNameField() {
 		if (lastNameField == null) {
 			lastNameField = new JTextField();
 			lastNameField.setName("lastNameField"); //$NON-NLS-1$

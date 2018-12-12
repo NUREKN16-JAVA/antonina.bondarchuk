@@ -26,6 +26,12 @@ public class User implements Serializable {
 	     this.dateOfBirth = dateOfBirth;
 	    }
 	    
+	public User(String firstName, String lastName, Date date) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = date;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -75,5 +81,30 @@ public class User implements Serializable {
 		
 									
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (this == obj) {
+			return true;
+		}
+		if (this.getId() == null && ((User) obj).getId() == null) {
+			return true;
+		}
+		return this.getId().equals(((User) obj).getId());
+	}
+	
+
+	@Override
+	public int hashCode() {
+		if (this.getId() == null) {
+			return 0;
+		}
+		return this.getId().hashCode();
+	}
+	
+	
 
 }
