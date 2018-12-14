@@ -7,6 +7,7 @@ import java.awt.Container;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import ua.nure.kn.bondarchuk.usermanagement2.User;
 import ua.nure.kn.bondarchuk.usermanagement2.db.DaoFactory;
 import ua.nure.kn.bondarchuk.usermanagement2.db.UserDao;
 import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
@@ -18,6 +19,7 @@ public class MainFrame extends JFrame {
 	private JPanel contentPanel;
 	private BrowsePanel browsePanel;
 	private AddPanel addPanel;
+	private EditPanel editPanel;
 	private UserDao dao;
 
 	public UserDao getDao() {
@@ -87,6 +89,25 @@ public class MainFrame extends JFrame {
 			
 		}
 		return addPanel;
+	}
+
+
+
+	public void showEditPanel(User user) {
+		 EditPanel editPanel = getEditPanel();
+	        editPanel.showEditPanel(user);
+	        this.showPanel(getEditPanel());
+		
+	}
+
+
+
+	private EditPanel getEditPanel() {
+		if (editPanel == null) {
+			editPanel = new EditPanel(this);
+			
+		}
+		return editPanel;
 	}
 
 }

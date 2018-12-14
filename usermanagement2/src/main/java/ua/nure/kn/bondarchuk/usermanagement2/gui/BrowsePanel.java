@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import ua.nure.kn.bondarchuk.usermanagement2.User;
 import ua.nure.kn.bondarchuk.usermanagement2.db.DatabaseException;
 import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
@@ -25,6 +26,7 @@ public class BrowsePanel extends JPanel implements ActionListener{
 	private JButton editButton;
 	private JButton deleteButton;
 	private JButton detailsButton;
+	private User user;
 
 	public BrowsePanel(MainFrame frame) {
 		parent = frame;
@@ -130,6 +132,16 @@ public class BrowsePanel extends JPanel implements ActionListener{
         if ("add".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
         	this.setVisible(false);
         	parent.showAddPanel();
+        }
+        else if("edit".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+        	Long id=(long) userTable.getValueAt(userTable.getSelectedRow(), 0);
+        	this.setVisible(false);
+        	try {
+				parent.showEditPanel(parent.getDao().find(id));
+			} catch (DatabaseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
         }
         initTable();
         return;

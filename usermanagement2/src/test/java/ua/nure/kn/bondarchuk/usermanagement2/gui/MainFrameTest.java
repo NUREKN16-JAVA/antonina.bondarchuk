@@ -107,4 +107,44 @@ public class MainFrameTest extends JFCTestCase {
 		table = (JTable) find(JTable.class, "userTable");
 		assertEquals(1, table.getRowCount());
 	}
+	
+	public void testEditUser () {
+		JTable table = (JTable) find(JTable.class, "userTable");
+		JButton addButton = (JButton) find(JButton.class, "addButton");
+		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+		find(JPanel.class,"addPanel");
+		JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
+		JTextField lastNameField = (JTextField) find(JTextField.class, "lastNameField");
+		JTextField dateOfBirthField = (JTextField) find(JTextField.class, "dateOfBirthField");
+		JButton okButton = (JButton) find(JButton.class, "okButton");
+	
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    String date=dateFormat.format(new Date());		
+		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
+		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
+		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
+		find(JPanel.class, "browsePanel");
+		//TO-DO: fix adding user in table
+		table.setRowSelectionInterval(0, 0);
+		JButton editButton = (JButton) find(JButton.class, "editButton");
+		getHelper().enterClickAndLeave(new MouseEventData(this, editButton));
+		find(JPanel.class,"editPanel");
+		JTextField firstNameFieldEdit = (JTextField) find(JTextField.class, "firstNameField");
+		JTextField lastNameFieldEdit = (JTextField) find(JTextField.class, "lastNameField");
+		JTextField dateOfBirthFieldEdit = (JTextField) find(JTextField.class, "dateOfBirthField");
+		firstNameFieldEdit.setText("");
+		lastNameFieldEdit.setText("");
+		dateOfBirthFieldEdit.setText("");
+		JButton okButtonEdit = (JButton) find(JButton.class, "okButton");
+		SimpleDateFormat dateFormatEdit = new SimpleDateFormat("yyyy-MM-dd");
+	    String dateEdit=dateFormatEdit.format(new Date());		
+		getHelper().sendString(new StringEventData(this, firstNameFieldEdit, "Josh"));
+		getHelper().sendString(new StringEventData(this, lastNameFieldEdit, "Mcdc"));		
+		getHelper().sendString(new StringEventData(this, dateOfBirthFieldEdit, dateEdit));
+		getHelper().enterClickAndLeave(new MouseEventData(this, okButtonEdit));
+		find(JPanel.class, "browsePanel");
+		assertEquals(1, table.getRowCount());
+		
+	}
 }
