@@ -15,7 +15,7 @@ public class UserTableModel extends AbstractTableModel {
 	private static final Class<?>[] COLUMN_CLASSES = {Long.class, String.class, String.class};
 	private List<User> users = null;
 	
-	public UserTableModel(Collection<User> users) {
+	public UserTableModel(Collection users) {
 		this.users = new ArrayList<>(users);
 		
 	}
@@ -53,19 +53,5 @@ public class UserTableModel extends AbstractTableModel {
 		}
 		return null;
 	}
-	
-	public User getUser(int index) {
-        return (User) users.get(index);
-    }
-
-    
-    public void addUsers(Collection<User> users) {
-        this.users.addAll(users);
-        
-    }
-
-    public void clearUsers() {
-        this.users = new ArrayList<>();
-    }
 
 }

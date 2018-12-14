@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,7 +23,7 @@ import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
 public class AddPanel extends JPanel implements ActionListener {
 	
-	protected MainFrame parent;
+	private MainFrame parent;
 	private JPanel buttonPanel;
 	private JPanel fieldPanel;
 	private JButton cancelButton;
@@ -96,7 +98,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		
 	}
 
-	protected JTextField getFirstNameField() {
+	private JTextField getFirstNameField() {
 		if (firstNameField == null) {
 			firstNameField = new JTextField();
 			firstNameField.setName("firstNameField"); //$NON-NLS-1$
@@ -104,7 +106,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		return firstNameField;
 	}
 	
-	protected JTextField getDateOfBirthField() {
+	private JTextField getDateOfBirthField() {
 		if (dateOfBirthField == null) {
 			dateOfBirthField = new JTextField();
 			dateOfBirthField.setName("dateOfBirthField"); //$NON-NLS-1$
@@ -112,7 +114,7 @@ public class AddPanel extends JPanel implements ActionListener {
 		return dateOfBirthField;
 	}
 
-	protected JTextField getLastNameField() {
+	private JTextField getLastNameField() {
 		if (lastNameField == null) {
 			lastNameField = new JTextField();
 			lastNameField.setName("lastNameField"); //$NON-NLS-1$
@@ -127,9 +129,10 @@ public class AddPanel extends JPanel implements ActionListener {
 			User user = new User();
 			user.setFirstName(getFirstNameField().getText());
 			user.setLastName(getLastNameField().getText());
-			DateFormat format = DateFormat.getDateTimeInstance();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		    String date=dateFormat.format(new Date());
 			try {
-				user.setDateOfBirth(format.parse(getDateOfBirthField().getText()));
+				user.setDateOfBirth(dateFormat.parse(getDateOfBirthField().getText()));
 			} catch (ParseException e1) {
 				getDateOfBirthField().setBackground(Color.RED);
 				return;

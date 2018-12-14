@@ -8,18 +8,20 @@ public abstract class DaoFactory {
 	private static final String DAO_FACTORY = "dao.factory";
 	protected static final String USER_DAO = "dao.ua.nure.kn.bondarchuk.usermanagement2.db.UserDao";
 	protected static Properties properties;
-	private static DaoFactory instance;
+	
 	
 	static {
 		properties = new Properties();
 		try {
-			properties.load(DaoFactory.class.getClass().getClassLoader().getResourceAsStream("settings.properties"));
+			properties.load(DaoFactory.class.getClassLoader().getResourceAsStream("settings.properties"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 	
-	public static synchronized DaoFactory getInstance() {
+	private static DaoFactory instance;
+	
+	public static DaoFactory getInstance() {
 		if(instance == null) {
 			Class<?> factoryClass;
 			try {
