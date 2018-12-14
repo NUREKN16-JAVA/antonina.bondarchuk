@@ -26,7 +26,7 @@ public class DeletePanel extends JPanel implements ActionListener{
 	
 	public DeletePanel(MainFrame parent) {
 		this.parent = parent;
-		parent.setSize(200,100);
+		parent.setSize(400,200);
 		initialize();
 	}
 
