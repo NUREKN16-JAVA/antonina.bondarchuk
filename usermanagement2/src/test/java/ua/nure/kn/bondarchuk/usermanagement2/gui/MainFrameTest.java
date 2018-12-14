@@ -147,4 +147,35 @@ public class MainFrameTest extends JFCTestCase {
 		assertEquals(1, table.getRowCount());
 		
 	}
+	
+	public void testDeleteUser() {
+		JTable table = (JTable) find(JTable.class, "userTable");
+		JButton addButton = (JButton) find(JButton.class, "addButton");
+		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
+		find(JPanel.class,"addPanel");
+		JTextField firstNameField = (JTextField) find(JTextField.class, "firstNameField");
+		JTextField lastNameField = (JTextField) find(JTextField.class, "lastNameField");
+		JTextField dateOfBirthField = (JTextField) find(JTextField.class, "dateOfBirthField");
+		JButton okButton = (JButton) find(JButton.class, "okButton");
+	
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    String date=dateFormat.format(new Date());		
+		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
+		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
+		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
+		assertEquals(1, table.getRowCount());
+		find(JPanel.class, "browsePanel");
+		table.setRowSelectionInterval(0, 0);
+		
+		JButton deleteButton = (JButton) find(JButton.class, "deleteButton");
+		getHelper().enterClickAndLeave(new MouseEventData(this, deleteButton));
+		find(JPanel.class,"deletePanel");
+		JButton okButtonDelete = (JButton) find(JButton.class, "okButton");
+		getHelper().enterClickAndLeave(new MouseEventData(this, okButtonDelete));
+		assertEquals(0, table.getRowCount());
+		
+		
+		
+	}
 }

@@ -143,6 +143,16 @@ public class BrowsePanel extends JPanel implements ActionListener{
 				e1.printStackTrace();
 			}
         }
+        else if("delete".equalsIgnoreCase(actionCommand)) { //$NON-NLS-1$
+        	Long id=(long) userTable.getValueAt(userTable.getSelectedRow(), 0);
+        	this.setVisible(false);
+        	try {
+				parent.showDeletePanel(parent.getDao().find(id));
+			} catch (DatabaseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+        }
         initTable();
         return;
         	
