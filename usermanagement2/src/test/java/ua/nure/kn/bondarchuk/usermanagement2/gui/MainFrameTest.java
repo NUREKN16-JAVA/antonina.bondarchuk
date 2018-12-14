@@ -3,6 +3,7 @@ package ua.nure.kn.bondarchuk.usermanagement2.gui;
 import java.awt.Component;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -11,19 +12,22 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+import com.mockobjects.dynamic.Mock;
+
 import junit.extensions.jfcunit.JFCTestCase;
 import junit.extensions.jfcunit.JFCTestHelper;
 import junit.extensions.jfcunit.eventdata.MouseEventData;
 import junit.extensions.jfcunit.eventdata.StringEventData;
 import junit.extensions.jfcunit.finder.NamedComponentFinder;
+import ua.nure.kn.bondarchuk.usermanagement2.User;
 import ua.nure.kn.bondarchuk.usermanagement2.db.DaoFactory;
-import ua.nure.kn.bondarchuk.usermanagement2.db.DaoFactoryImpl;
-import ua.nure.kn.bondarchuk.usermanagement2.db.MockUserDao;
+import ua.nure.kn.bondarchuk.usermanagement2.db.MockDaoFactory;
 import ua.nure.kn.bondarchuk.usermanagement2.util.Messages;
 
 public class MainFrameTest extends JFCTestCase {
 	
 	private MainFrame mainFrame;
+	private Mock mockUserDao;
 
 	protected void setUp() throws Exception {
 		super.setUp();
@@ -31,11 +35,12 @@ public class MainFrameTest extends JFCTestCase {
 		
 		try {
 			Properties properties = new Properties();
-			properties.setProperty(
-					"dao.ua.nure.kn.bondarchuk.usermanagement2.db.UserDao", 
-					MockUserDao.class.getName());
-			properties.setProperty("dao.factory", DaoFactoryImpl.class.getName());
+			
+			properties.setProperty("dao.factory", MockDaoFactory.class.getName());
 			DaoFactory.init(properties);
+			mockUserDao = ((MockDaoFactory) DaoFactory.getInstance()).getMockUserDao();
+			
+			mockUserDao.expectAndReturn("findAll", new ArrayList());
 			
 			setHelper(new JFCTestHelper());
 			mainFrame = new MainFrame();
@@ -47,10 +52,15 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	protected void tearDown() throws Exception {
-		
-		mainFrame.setVisible(false);
-		getHelper().cleanUp(this);
-		super.tearDown();
+		try {
+			mockUserDao.verify();
+			mainFrame.setVisible(false);
+			getHelper().cleanUp(this);
+			super.tearDown();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -78,7 +88,19 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testAddUser() {
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
+		User user = new User(firstName, lastName, now);
+		User expectedUser = new User(new Long(1), firstName, lastName, now);
+		mockUserDao.expectAndReturn("create", user, expectedUser);
+		
+		ArrayList users = new ArrayList();
+		users.add(expectedUser);
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
+		mockUserDao.expectAndReturn("findAll", users);
 		assertEquals(0, table.getRowCount());
 		
 		JButton addButton = (JButton) find(JButton.class, "addButton");
@@ -93,10 +115,12 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 		find(JButton.class, "cancelButton");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());
+	    String date=dateFormat.format(now);
 			
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
+		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));
 		
 		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
@@ -108,6 +132,10 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testCancelAddUser() {
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		assertEquals(0, table.getRowCount());
 		
@@ -123,10 +151,13 @@ public class MainFrameTest extends JFCTestCase {
 		find(JButton.class, "okButton");
 		JButton cancelButton = (JButton) find(JButton.class, "cancelButton");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());
+	    
+		String date=dateFormat.format(now);
 			
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));
+		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));
 		
 		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
@@ -138,6 +169,14 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testEditUser () {
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
+		String firstNameEdited = "Josh";
+		String lastNameEdited = "Mcdc";
+		Date nowEdited = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
@@ -148,9 +187,9 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 	
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+	    String date=dateFormat.format(now);		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		find(JPanel.class, "browsePanel");
@@ -167,9 +206,11 @@ public class MainFrameTest extends JFCTestCase {
 		dateOfBirthFieldEdit.setText("");
 		JButton okButtonEdit = (JButton) find(JButton.class, "okButton");
 		SimpleDateFormat dateFormatEdit = new SimpleDateFormat("yyyy-MM-dd");
-	    String dateEdit=dateFormatEdit.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameFieldEdit, "Josh"));
-		getHelper().sendString(new StringEventData(this, lastNameFieldEdit, "Mcdc"));		
+	    String dateEdit=dateFormatEdit.format(nowEdited);		
+		
+		getHelper().sendString(new StringEventData(this, firstNameFieldEdit, firstNameEdited));
+		
+		getHelper().sendString(new StringEventData(this, lastNameFieldEdit, lastNameEdited));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthFieldEdit, dateEdit));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButtonEdit));
 		find(JPanel.class, "browsePanel");
@@ -178,6 +219,14 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testCancelEditUser() {
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
+		String firstNameEdited = "Josh";
+		String lastNameEdited = "Mcdc";
+		Date nowEdited = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
@@ -188,9 +237,9 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 	
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+	    String date=dateFormat.format(now);		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		find(JPanel.class, "browsePanel");
@@ -207,20 +256,25 @@ public class MainFrameTest extends JFCTestCase {
 		dateOfBirthFieldEdit.setText("");
 		JButton  cancelButtonCancelEdit = (JButton) find(JButton.class, "cancelButton");
 		SimpleDateFormat dateFormatEdit = new SimpleDateFormat("yyyy-MM-dd");
-	    String dateEdit=dateFormatEdit.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameFieldEdit, "Josh"));
-		getHelper().sendString(new StringEventData(this, lastNameFieldEdit, "Mcdc"));		
+	    String dateEdit=dateFormatEdit.format(nowEdited);		
+		getHelper().sendString(new StringEventData(this, firstNameFieldEdit, firstNameEdited));
+		getHelper().sendString(new StringEventData(this, lastNameFieldEdit, lastNameEdited));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthFieldEdit, dateEdit));
 		getHelper().enterClickAndLeave(new MouseEventData(this, cancelButtonCancelEdit));	
 			
-		assertEquals(table.getModel().getValueAt(0, 1).toString(),"John");
-		assertEquals(table.getModel().getValueAt(0, 2).toString(),"Doe");
+		assertEquals(table.getModel().getValueAt(0, 1).toString(),firstName);
+		assertEquals(table.getModel().getValueAt(0, 2).toString(),lastName);
 		
 		find(JPanel.class, "browsePanel");
 		assertEquals(1, table.getRowCount());
 	}
 	
 	public void testDeleteUser() {
+
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
@@ -231,9 +285,9 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 	
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+	    String date=dateFormat.format(now);		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		assertEquals(1, table.getRowCount());
@@ -252,6 +306,11 @@ public class MainFrameTest extends JFCTestCase {
 	}
 	
 	public void testCancelDeleteUser() {
+
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
@@ -262,9 +321,9 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 	
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+	    String date=dateFormat.format(now);		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		assertEquals(1, table.getRowCount());
@@ -283,6 +342,11 @@ public class MainFrameTest extends JFCTestCase {
 	
 	
 	public void testDetails() {
+
+		String firstName = "John";
+		String lastName = "Doe";
+		Date now = new Date();
+		
 		JTable table = (JTable) find(JTable.class, "userTable");
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
@@ -293,9 +357,9 @@ public class MainFrameTest extends JFCTestCase {
 		JButton okButton = (JButton) find(JButton.class, "okButton");
 	
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    String date=dateFormat.format(new Date());		
-		getHelper().sendString(new StringEventData(this, firstNameField, "John"));
-		getHelper().sendString(new StringEventData(this, lastNameField, "Doe"));		
+	    String date=dateFormat.format(now);		
+		getHelper().sendString(new StringEventData(this, firstNameField, firstName));
+		getHelper().sendString(new StringEventData(this, lastNameField, lastName));		
 		getHelper().sendString(new StringEventData(this, dateOfBirthField, date));
 		getHelper().enterClickAndLeave(new MouseEventData(this, okButton));
 		find(JPanel.class, "browsePanel");
