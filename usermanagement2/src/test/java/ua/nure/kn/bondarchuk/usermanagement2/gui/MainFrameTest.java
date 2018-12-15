@@ -91,15 +91,16 @@ public class MainFrameTest extends JFCTestCase {
 		String firstName = "John";
 		String lastName = "Doe";
 		Date now = new Date();
-		
+		////
 		User user = new User(firstName, lastName, now);
 		User expectedUser = new User(new Long(1), firstName, lastName, now);
 		mockUserDao.expectAndReturn("create", user, expectedUser);
 		
 		ArrayList users = new ArrayList();
 		users.add(expectedUser);
-		
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
 		mockUserDao.expectAndReturn("findAll", users);
 		assertEquals(0, table.getRowCount());
 		
@@ -136,7 +137,11 @@ public class MainFrameTest extends JFCTestCase {
 		String lastName = "Doe";
 		Date now = new Date();
 		
+		ArrayList users = new ArrayList();
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
 		assertEquals(0, table.getRowCount());
 		
 		JButton addButton = (JButton) find(JButton.class, "addButton");
@@ -177,7 +182,18 @@ public class MainFrameTest extends JFCTestCase {
 		String lastNameEdited = "Mcdc";
 		Date nowEdited = new Date();
 		
+		//User user = new User(firstName, lastName, now);
+		User expectedUser = new User(new Long(1), firstNameEdited, lastNameEdited, nowEdited);
+		//mockUserDao.expectAndReturn("create", user);
+		mockUserDao.expectAndReturn("update", expectedUser);
+		
+		ArrayList users = new ArrayList();
+		users.add(expectedUser);
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
+		
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class,"addPanel");
@@ -227,7 +243,14 @@ public class MainFrameTest extends JFCTestCase {
 		String lastNameEdited = "Mcdc";
 		Date nowEdited = new Date();
 		
+		User expectedUser = new User(new Long(1), firstNameEdited, lastNameEdited, nowEdited);
+				
+		ArrayList users = new ArrayList();
+		users.add(expectedUser);
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class,"addPanel");
@@ -275,7 +298,18 @@ public class MainFrameTest extends JFCTestCase {
 		String lastName = "Doe";
 		Date now = new Date();
 		
+		///////////////////
+		
+		
+		User expectedUser = new User(new Long(1), firstName, lastName, now);
+		
+		mockUserDao.expectAndReturn("delete", expectedUser);
+		
+		ArrayList users = new ArrayList();
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class,"addPanel");
@@ -311,7 +345,13 @@ public class MainFrameTest extends JFCTestCase {
 		String lastName = "Doe";
 		Date now = new Date();
 		
+		
+		
+		ArrayList users = new ArrayList();
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class,"addPanel");
@@ -347,7 +387,14 @@ public class MainFrameTest extends JFCTestCase {
 		String lastName = "Doe";
 		Date now = new Date();
 		
+		User user = new User(firstName, lastName, now);
+		
+		ArrayList users = new ArrayList();
+		users.add(user);
+		mockUserDao.expectAndReturn("findAll", users);
 		JTable table = (JTable) find(JTable.class, "userTable");
+		///
+		mockUserDao.expectAndReturn("findAll", users);
 		JButton addButton = (JButton) find(JButton.class, "addButton");
 		getHelper().enterClickAndLeave(new MouseEventData(this, addButton));
 		find(JPanel.class,"addPanel");
