@@ -35,4 +35,5 @@ public class BrowseServletTest extends MockServletTestCase {
 		assertNotNull("Could not find user in session", user);
 		assertSame(user, userInSession);
 	}
+	
 }
