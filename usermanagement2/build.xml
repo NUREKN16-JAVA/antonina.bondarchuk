@@ -7,6 +7,7 @@
 	<property name="test-java-dir" value="${basedir}/src/test/java"></property>
 	<property name="classes-dir" value="${build-dir}/classes"/>
 	<property name="main-resources-dir" value="${basedir}/src/main/resources"></property>
+	<property name="lib-dir" value="${basedir}/lib"/>
 	
 	<property name="war-name" value="users"></property>
 	<property name="war-dir" value="${build-dir}/${war-name}"></property>
@@ -14,6 +15,7 @@
 	<property name="war-webinf-dir" value="${war-dir}/WEB-INF"></property>
 	<property name="war-lib-dir" value="${war-webinf-dir}/lib"></property>
 	<property name="war-classes-dir" value="${war-webinf-dir}/classes"></property>
+	<property name="ant-build-javac-target" value="1.8"/>
 	
 	<target name="clean">
 		<delete dir="${build-dir}" failonerror="no"/>
@@ -25,8 +27,17 @@
 	</target>
 	
 	<target name="compile" depends="init">
-		<javac srcdir="${main-java-dir}" destdir="${build-dir}">
-		</javac>
+		<javac target="${ant-build-javac-target}" srcdir="${main-java-dir}" destdir="${classes-dir}" includeantruntime="false">
+		            <classpath> 
+		                <fileset dir="${lib-dir}"/>
+		            </classpath>
+		        </javac>
+		        <copy todir="${classes-dir}">
+		            <fileset dir="${main-resources-dir}">
+		                <include name="**/*.properties"/>
+		                <include name="**/*.xml"/>
+		            </fileset>
+		        </copy>
 	</target>
 	
 	<target name="war.exploded" depends="compile">

@@ -46,7 +46,7 @@ public class ConnectionFactoryImpl implements ConnectionFactory {
 		try {
 			Class.forName(driver);
 		} catch (ClassNotFoundException e) {
-			throw new DatabaseException(e); //если не найден класс драйвера, то ошибка
+			throw new DatabaseException(e); 
 		}
 		
 		try {

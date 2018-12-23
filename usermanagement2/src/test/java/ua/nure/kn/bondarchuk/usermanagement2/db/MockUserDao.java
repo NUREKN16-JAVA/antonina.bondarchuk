@@ -30,7 +30,7 @@ public class MockUserDao implements UserDao {
 		return users.values();
 	}
 
-	@Override
+	
 	public void update(User user) throws DatabaseException {
 		Long currentId = user.getId();
 		users.remove(currentId);
@@ -39,14 +39,14 @@ public class MockUserDao implements UserDao {
 
 	}
 
-	@Override
+	
 	public void delete(User user) throws DatabaseException {
 		Long currentId = user.getId();
 		users.remove(currentId);
 
 	}
 
-	@Override
+
 	public void setConnectionFactory(ConnectionFactory connectionFactory) {
 		// TODO Auto-generated method stub
 
