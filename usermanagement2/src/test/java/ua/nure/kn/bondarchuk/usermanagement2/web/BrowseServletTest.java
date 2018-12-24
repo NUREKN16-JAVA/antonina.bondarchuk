@@ -46,5 +46,17 @@ public class BrowseServletTest extends MockServletTestCase {
 	        assertNotNull("Could not find user in session", userInSession);
 	        assertEquals(user, userInSession);
 	    }
+	 
+	 public void testDelete() {
+	        User user = new User(new Long(1000), "John", "Doe", new Date());
+	        getMockUserDao().expectAndReturn("find", new Long(1000), user);
+	        getMockUserDao().expect("delete", user);
+	        addRequestParameter("deleteButton", "Delete");
+	        addRequestParameter("id", "1000");
+	        doPost();
+
+	        User userInSession = (User) getWebMockObjectFactory().getMockSession().getAttribute("user");
+	        assertNull("Could not find list of users in session", userInSession);
+	    }
 	
 }

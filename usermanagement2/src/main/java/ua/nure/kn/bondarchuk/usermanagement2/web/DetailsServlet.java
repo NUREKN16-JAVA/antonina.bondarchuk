@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 public class DetailsServlet extends HttpServlet {
 
 	 protected void service(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException {
-	        if (arg0.getParameter("backButton") != null) {
+	        if (arg0.getParameter("OkButton") != null) {
 	        	arg0.getSession(true).removeAttribute("user");
 	        	arg0.getRequestDispatcher("/browse").forward(arg0, arg1);
 	        } else {

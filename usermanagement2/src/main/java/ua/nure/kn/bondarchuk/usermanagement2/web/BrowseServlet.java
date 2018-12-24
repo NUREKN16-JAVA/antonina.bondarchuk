@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import ua.nure.kn.bondarchuk.usermanagement2.User;
 import ua.nure.kn.bondarchuk.usermanagement2.db.DaoFactory;
 import ua.nure.kn.bondarchuk.usermanagement2.db.DatabaseException;
+import ua.nure.kn.bondarchuk.usermanagement2.db.UserDao;
 
 public class BrowseServlet extends HttpServlet {
 
@@ -51,8 +52,24 @@ public class BrowseServlet extends HttpServlet {
 	}
 
 	private void delete(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException{
-		// TODO Auto-generated method stub
-		
+		 String idStrUser = arg0.getParameter("id");
+
+	        if (idStrUser == null || idStrUser.trim().isEmpty()) {
+	        	arg0.setAttribute("error", "You must select a user");
+	        	arg0.getRequestDispatcher("/browse.jsp").forward(arg0, arg1);
+	            return;
+	        }
+
+	        try {
+	            UserDao userDao = DaoFactory.getInstance().getUserDao();
+	            User deleteUser = userDao.find(Long.parseLong(idStrUser));
+	            userDao.delete(deleteUser);
+	        } catch (Exception e) {
+	        	arg0.setAttribute("error", "ERROR:" + e.toString());
+	        	arg0.getRequestDispatcher("/browse.jsp").forward(arg0, arg1);
+	            return;
+	        }
+	        arg1.sendRedirect("/browse");
 	}
 
 	private void edit(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException{
