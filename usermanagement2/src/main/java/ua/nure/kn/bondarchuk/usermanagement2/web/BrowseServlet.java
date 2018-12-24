@@ -59,7 +59,7 @@ public class BrowseServlet extends HttpServlet {
 	}
 
 	private void add(HttpServletRequest arg0, HttpServletResponse arg1) throws ServletException, IOException{
-		// TODO Auto-generated method stub
+		arg0.getRequestDispatcher("/add").forward(arg0, arg1);
 		
 	}
 
