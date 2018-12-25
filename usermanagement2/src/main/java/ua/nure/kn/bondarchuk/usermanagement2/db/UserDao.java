@@ -20,6 +20,8 @@ public interface UserDao {
 	
 	Collection<User> findAll() throws DatabaseException;
 	
+	Collection<User> find(String firstName, String lastName) throws DatabaseException;
+	
 	/**
 	*
 	*@param user
